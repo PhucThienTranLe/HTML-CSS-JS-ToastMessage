@@ -1,0 +1,127 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>ToastMessage BEM</title>
+    <link rel="stylesheet" href="./assets/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+</head>
+
+<body>
+    <div>
+        <div id="toast"></div>
+
+        <!-- Warning -->
+        <!-- <div class="toast toast--warning">
+            <div class="toast__icon">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <div class="toast__body">
+                <div class="toast__title">Warning</div>
+                <div class="toast__msg">Các bạn subscribe kênh Youtube</div>
+            </div>
+            <div class="toast__close">
+                <i class="fa-solid fa-xmark"></i>
+            </div>
+        </div> -->
+
+        <!-- Error -->
+        <!-- <div class="toast toast--error">
+            <div class="toast__icon">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <div class="toast__body">
+                <div class="toast__title">Error</div>
+                <div class="toast__msg">Các bạn subscribe kênh Youtube</div>
+            </div>
+            <div class="toast__close">
+                <i class="fa-solid fa-xmark"></i>
+            </div>
+        </div> -->
+        <div onclick="showSuccessToast();" class="btn btn--success">Show Success</div>
+        <div onclick="showWarningToast();" class="btn btn--warning">Show Warning</div>
+        <div onclick="showErrorToast();" class="btn btn--error">Show Error</div>
+    </div>
+    
+    <script>
+        function toast({
+            title = "",
+            message = "",
+            type = "info",
+            duration = 2000
+        }) {
+            const main = document.getElementById('toast');
+            if (main) {
+                const toast = document.createElement('div');
+
+                //Auto remove toast
+                const autoRemoveId = setTimeout(function () {
+                    main.removeChild(toast);
+                }, duration + 1000);
+
+                //Click to close toast
+                toast.onclick = function (e) {
+                    if (e.target.closest('.toast__close')) {
+                        main.removeChild(toast);
+                        clearTimeout(autoRemoveId);
+                    }
+                }
+
+                const icons = {
+                    success: 'fa-solid fa-circle-check',
+                    warning: 'fa-solid fa-circle-exclamation',
+                    error: 'fa-solid fa-circle-exclamation',
+                };
+                const icon = icons[type];
+                const delay = (duration / 1000).toFixed(2);
+
+                toast.classList.add('toast', `toast--${type}`);
+                toast.style.animation = `slideInLeft ease 0.3s, fadeOut linear 1s ${delay}s forwards`;
+
+                toast.innerHTML = ` 
+                    <div class="toast__icon">
+                        <i class="${icon}"></i>
+                    </div>
+                    <div class="toast__body">
+                        <div class="toast__title">${title}</div>
+                        <div class="toast__msg">${message}</div>
+                    </div>
+                    <div class="toast__close">
+                        <i class="fa-solid fa-xmark"></i>
+                    </div>
+                `;
+                main.appendChild(toast);
+            }
+        }
+
+        function showSuccessToast() {
+            toast({
+                title: 'Success',
+                message: 'Successfully',
+                type: 'success',
+                duration: 5000
+            });
+        }
+        function showWarningToast() {
+            toast({
+                title: 'Warning',
+                message: 'Something maybe wrong',
+                type: 'warning',
+                duration: 5000
+            });
+        }
+        function showErrorToast() {
+            toast({
+                title: 'Error',
+                message: 'Something was wrong',
+                type: 'error',
+                duration: 5000
+            });
+        }
+    </script>
+</body>
+
+</html>
